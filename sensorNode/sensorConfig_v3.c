@@ -60,7 +60,8 @@ static void *opcServerThread(void* val) {
     signal(SIGINT, stopHandler);
     signal(SIGTERM, stopHandler);
 
-    UA_ServerConfig *config = UA_ServerConfig_new_default();
+    //UA_ServerConfig *config = UA_ServerConfig_new_default();
+    UA_ServerConfig *config = UA_ServerConfig_new_minimal(4840, NULL);
     UA_Server *server = UA_Server_new(config);
 
     addDouble(server, "TEMP", 0.0);
