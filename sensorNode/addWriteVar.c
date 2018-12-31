@@ -9,7 +9,7 @@ void addNode(UA_Server *server, UA_VariableAttributes attr,char *name){
     UA_Server_addVariableNode(server, myIntegerNodeId, parentNodeId,parentReferenceNodeId, myIntegerName,
                                 UA_NODEID_NUMERIC(0, UA_NS0ID_BASEDATAVARIABLETYPE), attr, NULL, NULL);
 }
-/************************ CREATE NEW DOUBLE VARIABLE **********************************/
+/************************ CREATE NEW VARIABLE **********************************/
 void addDouble(UA_Server *server, char *name, double init_val) {
     /* Define the attribute of the myInteger variable node */
     UA_VariableAttributes attr = UA_VariableAttributes_default;
@@ -22,7 +22,6 @@ void addDouble(UA_Server *server, char *name, double init_val) {
     /* Add node to Server*/
     addNode(server,attr,name);
 }
-/************************ CREATE NEW BOOLEAN VARIABLE **********************************/
 void addBoolean(UA_Server *server, char *name, bool bool_val) {
     /* Define the attribute of the myInteger variable node */
     UA_VariableAttributes attr = UA_VariableAttributes_default;
@@ -35,7 +34,40 @@ void addBoolean(UA_Server *server, char *name, bool bool_val) {
     /* Add node to Server*/
     addNode(server,attr,name);
 }
-/************************ WRITE NWE DOUBLE VALUE **********************************/
+/********************* BEFORE READ DOUBLE  ****************************/
+void beforeReadDouble(UA_Server *server,
+                                 const UA_NodeId *sessionId, void *sessionContext,
+                                 const UA_NodeId *nodeid, void *nodeContext,
+                                 const UA_NumericRange *range, const UA_DataValue *data) {
+    UA_Variant value;
+    UA_Variant_setScalar(&value, &dTemp, &UA_TYPES[UA_TYPES_DOUBLE]);
+    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "TEMP");
+    UA_Server_writeValue(server, currentNodeId, value);
+}
+void beforeReadBoolean(UA_Server *server,
+                                 const UA_NodeId *sessionId, void *sessionContext,
+                                 const UA_NodeId *nodeid, void *nodeContext,
+                                 const UA_NumericRange *range, const UA_DataValue *data) {
+    //UA_Boolean  bVal = bOverheat ;
+    UA_Variant value;
+    UA_Variant_setScalar(&value, &bOverheat, &UA_TYPES[UA_TYPES_BOOLEAN]);
+    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "OVERHEAT");
+    UA_Server_writeValue(server, currentNodeId, value);
+}
+/********************* CALLBACK FUNCTION  ****************************/
+void addCallbackDouble(UA_Server *server) {
+    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "TEMP");
+    UA_ValueCallback callback ;
+    callback.onRead = beforeReadDouble;
+    UA_Server_setVariableNode_valueCallback(server, currentNodeId, callback);
+}
+void addCallbackBoolean(UA_Server *server) {
+    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "OVERHEAT");
+    UA_ValueCallback callback ;
+    callback.onRead = beforeReadBoolean;
+    UA_Server_setVariableNode_valueCallback(server, currentNodeId, callback);
+}
+/************************ WRITE  VALUE **********************************/
 void writeDouble(UA_Server *server, char *name, double val) {
     UA_NodeId myIntegerNodeId = UA_NODEID_STRING(1, name);
     // * Write a different integer value 
@@ -44,22 +76,7 @@ void writeDouble(UA_Server *server, char *name, double val) {
     UA_Variant_init(&myVar);
     UA_Variant_setScalar(&myVar, &myTempVar, &UA_TYPES[UA_TYPES_DOUBLE]);
     UA_Server_writeValue(server, myIntegerNodeId, myVar);
-
-    UA_WriteValue wv;
-    UA_WriteValue_init(&wv);
-    wv.nodeId = myIntegerNodeId;
-    wv.attributeId = UA_ATTRIBUTEID_VALUE;
-    wv.value.status = UA_STATUSCODE_BADNOTCONNECTED;
-    wv.value.hasStatus = true;
-    UA_Server_write(server, &wv);
-
-    /* Reset the variable to a good statuscode with a value */
-    wv.value.hasStatus = false;
-    wv.value.value = myVar;
-    wv.value.hasValue = true;
-    UA_Server_write(server, &wv);
 }
-/************************ WRITE NEW BOOLEAN VALUE **********************************/
 void writeBoolean(UA_Server *server, char *name, bool val) {
     UA_NodeId myIntegerNodeId = UA_NODEID_STRING(1, name);
     // * Write a different integer value

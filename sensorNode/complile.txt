@@ -1,0 +1,2 @@
+gcc -Wall open62541.c addWriteVar.c sensorConfig.c -o sensorConfig -lwiringPi -lpthread
+

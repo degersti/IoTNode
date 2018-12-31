@@ -1,3 +1,11 @@
+/************************************************************
+* Name:		sensorConfig_v3.c
+* Author:	Markus Gerstenberg
+* Description:	This file contains a Running server for the 
+*		sensorNode with updating variables. In 
+*		comparison to _v2.c some Functioons are passed
+*		to addWriteVar.c.
+**************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,46 +19,11 @@
 #include "open62541.h"
 
 UA_Boolean 	running = true;
-UA_Double	dTemp;
-UA_Boolean	bOverheat;
 int		fd;
 /********************* CLOSE SERVER ON CTRL-C ****************************/
 static void stopHandler(int sign) {
     UA_LOG_INFO(UA_Log_Stdout, UA_LOGCATEGORY_SERVER, "received ctrl-c");
     running = false;
-}
-/********************* BEFORE READ DOUBLE  ****************************/
-static void beforeReadDouble(UA_Server *server,
-                                 const UA_NodeId *sessionId, void *sessionContext,
-                                 const UA_NodeId *nodeid, void *nodeContext,
-                                 const UA_NumericRange *range, const UA_DataValue *data) {
-    UA_Variant value;
-    UA_Variant_setScalar(&value, &dTemp, &UA_TYPES[UA_TYPES_DOUBLE]);
-    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "TEMP");
-    UA_Server_writeValue(server, currentNodeId, value);
-}
-static void beforeReadBoolean(UA_Server *server,
-                                 const UA_NodeId *sessionId, void *sessionContext,
-                                 const UA_NodeId *nodeid, void *nodeContext,
-                                 const UA_NumericRange *range, const UA_DataValue *data) {
-    //UA_Boolean  bVal = bOverheat ;
-    UA_Variant value;
-    UA_Variant_setScalar(&value, &bOverheat, &UA_TYPES[UA_TYPES_BOOLEAN]);
-    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "OVERHEAT");
-    UA_Server_writeValue(server, currentNodeId, value);
-}
-/********************* CALLBACK FUNCTION  ****************************/
-static void addCallbackDouble(UA_Server *server) {
-    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "TEMP");
-    UA_ValueCallback callback ;
-    callback.onRead = beforeReadDouble;
-    UA_Server_setVariableNode_valueCallback(server, currentNodeId, callback);
-}
-static void addCallbackBoolean(UA_Server *server) {
-    UA_NodeId currentNodeId = UA_NODEID_STRING(1, "OVERHEAT");
-    UA_ValueCallback callback ;
-    callback.onRead = beforeReadBoolean;
-    UA_Server_setVariableNode_valueCallback(server, currentNodeId, callback);
 }
 /****************** READ VALUE FROM UART ********************************/
 int readSerial(){
