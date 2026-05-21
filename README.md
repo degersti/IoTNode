@@ -3,9 +3,10 @@
 This project was originally developed in 2018/2019 as part of a Master's research project at FH Vorarlberg.
 The focus was on demonstrating modular Industry 4.0 concepts using low-cost embedded hardware and OPC UA communication.
 The system consists of modular industrial nodes (sensor, actuator, transport and machine nodes) communicating in a decentralized architecture inspired by Industry 4.0 concepts.
-The project uses the OPC UA implementation from open62541 and the GPIO library wiringPi.
 
-See the original documentation for further details.
+In this project a OPC UA distribution from https://open65421.org and wiringPi library from http://wiringpi.com was used.
+
+For further details see the original documentation for further details.
 
 ## Build Requirements
 
