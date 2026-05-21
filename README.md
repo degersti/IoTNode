@@ -7,6 +7,7 @@ The system consists of modular industrial nodes (sensor, actuator, transport and
 In this project a OPC UA distribution from https://open65421.org and wiringPi library from http://wiringpi.com was used.
 
 For further details see the original documentation for further details.
+[PDF Documentation](https://github.com/degersti/IoTNode/blob/master/docs/iotnode-documentation.pdf)
 
 ## The Concept
 
