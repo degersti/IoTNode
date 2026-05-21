@@ -25,26 +25,29 @@ For further details see the original documentation for further details.
 
 ## Repository Structure
 
-- `/sensorNode`
-  OPC UA sensor node implementation
+- `/embedded-linux`
+  Shared embedded Linux runtime, configuration handling and OPC UA libraries
+  
+- `/embedded-linux/sensor-node`
+  OPC UA sensor node implementation with UART sensor interface and process variable handling
 
-- `/actuatorNode`
-  Actuator and maintenance node
+- `/embedded-linux/actuator-node`
+  OPC UA actuator node controlling GPIO-based outputs according to process states
 
-- `/machineNode`
-  Simulated machine controller
+- `/embedded-linux/conveyor-node`
+  Planned transport/conveyor node for decentralized material handling
 
-- `/transportNode`
-  RFID-based transport node
+- `/embedded-linux/machine-node`
+  Planned machine control node for distributed production logic
 
-- `/hwTest`
-  Hardware interface and GPIO test programs
+- `/hardware-tests`
+  Hardware interface, GPIO and communication test utilities written in C and Python
 
-- `/master`
-  Startup and node configuration handling
+- `/sensor-interface`
+  Arduino-based sensor interface firmware
 
 - `/docs`
-  Documentation, diagrams and thesis excerpts
+  Documentation, diagrams and original project documentation
   
 ## Achivements and Open Points
 
