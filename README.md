@@ -8,6 +8,10 @@ In this project a OPC UA distribution from https://open65421.org and wiringPi li
 
 For further details see the original documentation for further details.
 
+<p align="center">
+  <img src="./docs/img/concept.png" alt="concept" width="100%" />
+</p>
+
 ## Build Requirements
 
 - Raspberry Pi OS
