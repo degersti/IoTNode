@@ -46,13 +46,12 @@ For further details see the original documentation for further details.
 - `/docs`
   Documentation, diagrams and thesis excerpts
   
-## Lessons Learned / Modern Perspective
+## Achivements and Open Points
 
-Today the system would likely use:
+### Actuator Node
+The  node implements a basic OPC UA client that reads the `OVERHEAT` state from the sensor node and switches a GPIO output accordingly.  
+The planned actuator feedback loop using an additional sensor input was specified in the concept but is not fully implemented in this prototype.
+Also the maintainance counter specified is not yet implemented.
 
-- containerized edge services
-- MQTT/UNS architectures
-- industrial edge hardware
-- improved security concepts
-- OPC UA PubSub
-- cloud-edge integration
+## Additional Notes
+
